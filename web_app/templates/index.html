@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Channel Persona Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Channel Persona Analysis</h1>
+        
+        <!-- Analysis Form -->
+        <div class="analysis-form">
+            <form action="/analyze" method="POST" id="analysisForm">
+                <div class="form-group">
+                    <label for="youtube_channel_url">YouTube Channel URL:</label>
+                    <input type="url" 
+                           id="youtube_channel_url" 
+                           name="youtube_channel_url" 
+                           required 
+                           placeholder="https://www.youtube.com/@channel"
+                           value="{{ channel_url if channel_url else '' }}">
+                </div>
+                <button type="submit" class="analyze-btn">Analyze Channel</button>
+            </form>
+        </div>
+
+        <!-- Progress Bar (Initially Hidden) -->
+        <div id="progressContainer" class="progress-container" style="display: none;">
+            <div class="progress-bar">
+                <div id="progressBar" class="progress"></div>
+            </div>
+            <div id="progressStatus" class="progress-status">Initializing analysis...</div>
+        </div>
+
+        <!-- Error Message -->
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- Results Section -->
+        {% if results %}
+        <div class="results-container">
+            <h2>Analysis Results</h2>
+            
+            <!-- Channel Information -->
+            {% if results.persona_analysis.channel_info %}
+            <div class="section">
+                <h3>Channel Overview</h3>
+                <div class="info-grid">
+                    {% for key, value in results.persona_analysis.channel_info.items() %}
+                    <div class="info-item">
+                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
+                        <span class="value">{{ value }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Content Analysis -->
+            {% if results.persona_analysis.content_analysis %}
+            <div class="section">
+                <h3>Content Analysis</h3>
+                <div class="info-grid">
+                    {% for key, value in results.persona_analysis.content_analysis.items() %}
+                    <div class="info-item">
+                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
+                        <span class="value">
+                            {% if value is string %}
+                                {{ value }}
+                            {% else %}
+                                {{ value|join(", ") }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Audience Insights -->
+            {% if results.persona_analysis.audience_insights %}
+            <div class="section">
+                <h3>Audience Insights</h3>
+                <div class="info-grid">
+                    {% for key, value in results.persona_analysis.audience_insights.items() %}
+                    <div class="info-item">
+                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
+                        <span class="value">{{ value }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recommendations -->
+            {% if results.recommendations %}
+            <div class="section">
+                <h3>Recommendations</h3>
+                <div class="recommendations-grid">
+                    <div class="recommendation-category">
+                        <h4>Content Strategy</h4>
+                        <ul>
+                            {% for rec in results.recommendations.content_strategy %}
+                            <li>{{ rec }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="recommendation-category">
+                        <h4>Engagement Suggestions</h4>
+                        <ul>
+                            {% for rec in results.recommendations.engagement_suggestions %}
+                            <li>{{ rec }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</body>
+</html> 

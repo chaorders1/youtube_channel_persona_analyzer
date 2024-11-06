@@ -22,13 +22,15 @@ The project focuses on YouTube Channel Persona Analysis. It involves building a 
         -d '{
             "youtube_channel_url": "https://www.youtube.com/@AIJasonZ"
         }'
-        
+
 3. Web Application for Result Display
 	•	Description: Develop a simple web app to display the analysis results.
 	•	Implementation: Interfaces with the API to fetch and display data to users.
 	•	Features:
 	•	User-friendly interface for inputting YouTube channel details.
 	•	Displays persona analysis in an organized format.
+    # Example web app command
+    uvicorn web_app.main:app --reload --port 8000
 
 
 ** # Doc **

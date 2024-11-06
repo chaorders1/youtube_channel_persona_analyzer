@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field, HttpUrl
 from typing import Dict, Any, Optional
 import uvicorn
@@ -9,6 +9,7 @@ from pathlib import Path
 import logging
 from datetime import datetime
 import json
+import asyncio
 
 # Configure logging
 logging.basicConfig(
@@ -209,22 +210,71 @@ async def root():
 
 @app.post("/test-analyze")
 async def test_analyze(request: ChannelAnalysisRequest):
-    """Test endpoint that returns mock data without running the pipeline."""
-    return {
-        "youtube_channel_url": str(request.youtube_channel_url),
-        "analysis_timestamp": datetime.utcnow().isoformat() + "Z",
-        "persona_analysis": {
-            "test": "This is a test response",
-            "url_received": str(request.youtube_channel_url)
-        },
-        "metrics": {
-            "max_videos": 10,
-            "include_comments": False
-        },
-        "recommendations": {
-            "test": "Test recommendations"
+    """Enhanced test endpoint with simulated pipeline stages."""
+    try:
+        stages = [
+            ("Initializing Analysis", 10),
+            ("Capturing Channel Screenshots", 30),
+            ("Processing Images", 50),
+            ("Analyzing Channel Content", 70),
+            ("Generating Persona Report", 90),
+            ("Finalizing Results", 100)
+        ]
+        
+        # Simulate pipeline stages with actual data
+        analysis_data = {
+            "channel_info": {
+                "name": "Sample Channel",
+                "subscribers": "100K+",
+                "total_videos": "500+",
+                "join_date": "2020"
+            },
+            "content_analysis": {
+                "main_topics": ["Technology", "AI", "Programming"],
+                "video_style": "Educational/Tutorial",
+                "avg_duration": "15-20 minutes"
+            },
+            "audience_insights": {
+                "primary_demographic": "Tech professionals & students",
+                "engagement_rate": "8.5%",
+                "peak_activity": "Weekdays evenings"
+            },
+            "recommendations": [
+                "Increase upload frequency",
+                "Expand topic coverage",
+                "Enhance community engagement"
+            ]
         }
-    }
+
+        # Return formatted analysis results
+        return {
+            "youtube_channel_url": str(request.youtube_channel_url),
+            "analysis_timestamp": datetime.utcnow().isoformat() + "Z",
+            "persona_analysis": analysis_data,
+            "metrics": {
+                "analyzed_videos": 10,
+                "engagement_metrics": {
+                    "avg_likes": "5K+",
+                    "avg_comments": "500+",
+                    "view_retention": "65%"
+                }
+            },
+            "recommendations": {
+                "content_strategy": [
+                    "Focus on trending tech topics",
+                    "Create series-based content",
+                    "Optimize video lengths"
+                ],
+                "engagement_suggestions": [
+                    "Increase community posts",
+                    "Host live Q&A sessions",
+                    "Collaborate with similar channels"
+                ]
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error in test analysis: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     try:
@@ -240,8 +290,3 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Failed to start server: {e}")
         sys.exit(1)
-
-# Example usage
-response = requests.post(url, json=data)
-with open('analysis_result.json', 'w') as f:
-    json.dump(response.json(), f, indent=2)
