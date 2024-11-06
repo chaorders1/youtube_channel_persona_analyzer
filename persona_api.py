@@ -209,65 +209,9 @@ async def root():
         "health_check": "/health"
     }
 
-def parse_markdown_sections(content: str) -> dict:
-    """Parse markdown content into structured sections."""
-    sections = {
-        "channel_info": {},
-        "content_analysis": {},
-        "audience_insights": {},
-        "recommendations": {
-            "content_strategy": [],
-            "engagement_suggestions": []
-        }
-    }
-    
-    # Parse Basic Channel Data
-    channel_name_match = re.search(r'Channel Name: (.*)', content)
-    subscribers_match = re.search(r'Subscribers: (.*)', content)
-    if channel_name_match:
-        sections["channel_info"]["name"] = channel_name_match.group(1).strip()
-    if subscribers_match:
-        sections["channel_info"]["subscribers"] = subscribers_match.group(1).strip()
-    
-    # Parse Channel Classification
-    category_match = re.search(r'Primary Category: (.*)', content)
-    main_area_match = re.search(r'Main Area: (.*)', content)
-    niche_match = re.search(r'Specific Niche: (.*)', content)
-    if category_match:
-        sections["content_analysis"]["category"] = category_match.group(1).strip()
-    if main_area_match:
-        sections["content_analysis"]["main_area"] = main_area_match.group(1).strip()
-    if niche_match:
-        sections["content_analysis"]["niche"] = niche_match.group(1).strip()
-    
-    # Parse Themes/Topics
-    themes_section = re.search(r'Themes reveal audience interests in:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
-    if themes_section:
-        themes = re.findall(r'-\s*(.*)', themes_section.group(1))
-        sections["content_analysis"]["main_topics"] = themes
-    
-    # Parse Expertise and Style
-    expertise_section = re.search(r'Expertise Demonstration:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
-    if expertise_section:
-        expertise = re.findall(r'-\s*(.*)', expertise_section.group(1))
-        sections["content_analysis"]["expertise"] = expertise
-    
-    presentation_section = re.search(r'Presentation Style:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
-    if presentation_section:
-        style = re.findall(r'-\s*(.*)', presentation_section.group(1))
-        sections["content_analysis"]["presentation_style"] = style
-    
-    # Parse Target Audience
-    audience_section = re.search(r'Target Audience:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
-    if audience_section:
-        audience = re.findall(r'-\s*(.*)', audience_section.group(1))
-        sections["audience_insights"]["target_audience"] = audience
-    
-    return sections
-
 @app.post("/test-analyze")
 async def test_analyze(request: ChannelAnalysisRequest):
-    """Enhanced test endpoint that runs pipeline and reads analysis."""
+    """Enhanced test endpoint that runs pipeline and returns raw analysis."""
     try:
         # Get the channel handle from the URL
         channel_handle = str(request.youtube_channel_url).split('@')[-1]
@@ -304,25 +248,15 @@ async def test_analyze(request: ChannelAnalysisRequest):
         # Get the most recent file
         latest_file = max(analysis_files, key=lambda x: x.stat().st_mtime)
         
-        # Read and parse the markdown content
+        # Read the markdown content directly
         content = latest_file.read_text()
-        parsed_data = parse_markdown_sections(content)
         
-        # Return formatted analysis results
+        # Return the analysis results with the raw markdown content
         return {
             "youtube_channel_url": str(request.youtube_channel_url),
             "analysis_timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat() + "Z",
-            "persona_analysis": parsed_data,
-            "metrics": {
-                "analyzed_videos": len(re.findall(r'"\d+\..*?"', content)),
-                "engagement_metrics": {
-                    "source_file": latest_file.name
-                }
-            },
-            "recommendations": {
-                "content_strategy": parsed_data["recommendations"]["content_strategy"],
-                "engagement_suggestions": parsed_data["recommendations"]["engagement_suggestions"]
-            }
+            "analysis_content": content,
+            "source_file": latest_file.name
         }
         
     except Exception as e:

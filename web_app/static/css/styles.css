@@ -1,0 +1,14 @@
+.markdown-content {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.markdown-content h1 { font-size: 2em; margin-bottom: 0.5em; }
+.markdown-content h2 { font-size: 1.75em; margin-bottom: 0.5em; }
+.markdown-content h3 { font-size: 1.5em; margin-bottom: 0.5em; }
+.markdown-content p { margin-bottom: 1em; }
+.markdown-content ul { margin-bottom: 1em; padding-left: 2em; }
+.markdown-content li { margin-bottom: 0.5em; } 

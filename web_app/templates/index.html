@@ -45,106 +45,15 @@
         {% if results %}
         <div class="results-container">
             <h2>Analysis Results</h2>
+            <p>Channel URL: {{ results.youtube_channel_url }}</p>
+            <p>Analysis Time: {{ results.analysis_timestamp }}</p>
             
-            <!-- Channel Information -->
-            {% if results.persona_analysis.channel_info %}
-            <div class="section">
-                <h3>Channel Overview</h3>
-                <div class="info-grid">
-                    {% for key, value in results.persona_analysis.channel_info.items() %}
-                    <div class="info-item">
-                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
-                        <span class="value">{{ value }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
+            <!-- Display the HTML content -->
+            <div class="markdown-content">
+                {{ html_content | safe }}
             </div>
-            {% endif %}
-
-            <!-- Content Analysis -->
-            {% if results.persona_analysis.content_analysis %}
-            <div class="section">
-                <h3>Content Analysis</h3>
-                <div class="info-grid">
-                    {% for key, value in results.persona_analysis.content_analysis.items() %}
-                    <div class="info-item">
-                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
-                        <span class="value">
-                            {% if value is string %}
-                                {{ value }}
-                            {% else %}
-                                {{ value|join(", ") }}
-                            {% endif %}
-                        </span>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Audience Insights -->
-            {% if results.persona_analysis.audience_insights %}
-            <div class="section">
-                <h3>Audience Insights</h3>
-                <div class="info-grid">
-                    {% for key, value in results.persona_analysis.audience_insights.items() %}
-                    <div class="info-item">
-                        <span class="label">{{ key|replace('_', ' ')|title }}:</span>
-                        <span class="value">{{ value }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Recommendations -->
-            {% if results.recommendations %}
-            <div class="section">
-                <h3>Recommendations</h3>
-                <div class="recommendations-grid">
-                    <div class="recommendation-category">
-                        <h4>Content Strategy</h4>
-                        <ul>
-                            {% for rec in results.recommendations.content_strategy %}
-                            <li>{{ rec }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="recommendation-category">
-                        <h4>Engagement Suggestions</h4>
-                        <ul>
-                            {% for rec in results.recommendations.engagement_suggestions %}
-                            <li>{{ rec }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Main Topics -->
-            {% if results.persona_analysis.content_analysis.main_topics %}
-            <div class="section">
-                <h3>Main Topics</h3>
-                <div class="topics-grid">
-                    {% for topic in results.persona_analysis.content_analysis.main_topics %}
-                    <div class="topic-item">{{ topic }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Expertise -->
-            {% if results.persona_analysis.content_analysis.expertise %}
-            <div class="section">
-                <h3>Expertise</h3>
-                <ul class="expertise-list">
-                    {% for item in results.persona_analysis.content_analysis.expertise %}
-                    <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
+            
+            <p class="text-muted">Source: {{ results.source_file }}</p>
         </div>
         {% endif %}
     </div>
