@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: stone_ji_20241106_141824.png
+- Original Path: /Users/yuanlu/Code/chaorders_website/data/web_snapshots/stone_ji_20241106_141824.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x7310
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 8
+- Output Directory: /Users/yuanlu/Code/chaorders_website/data/crop_stone_ji_20241106_141824
+
+Processing Date: 2024-11-06 14:18:47

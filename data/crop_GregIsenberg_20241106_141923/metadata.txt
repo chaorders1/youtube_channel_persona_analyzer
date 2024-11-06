@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: GregIsenberg_20241106_141923.png
+- Original Path: /Users/yuanlu/Code/chaorders_website/data/web_snapshots/GregIsenberg_20241106_141923.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x7310
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 8
+- Output Directory: /Users/yuanlu/Code/chaorders_website/data/crop_GregIsenberg_20241106_141923
+
+Processing Date: 2024-11-06 14:19:47
