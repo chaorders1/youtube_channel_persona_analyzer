@@ -2,137 +2,109 @@
 
 <div align="center">
 
-[![Stars](https://img.shields.io/github/stars/yourusername/youtube-channel-persona-analyzer?style=social)](https://github.com/yourusername/youtube-channel-persona-analyzer/stargazers)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68.0+-green.svg)](https://fastapi.tiangolo.com/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Generate AI-powered persona reports for any YouTube channel in seconds! Perfect for content creators, marketers, and researchers.
-
-[Documentation](docs/) • [Report Bug](issues) • [Request Feature](issues)
+AI-powered YouTube channel analysis tool that generates detailed persona reports in seconds.
 
 </div>
 
-## 🌟 Why Choose This Tool?
+## ✨ Features
 
-- **🧠 Advanced AI Analysis**: Powered by Claude AI for human-like understanding of channel content
-- **⚡ Lightning Fast**: Get comprehensive reports in under 60 seconds
-- **📊 Rich Insights**: Deep dive into content strategy, audience engagement, and brand personality
-- **🎯 Actionable Results**: Get practical recommendations for channel growth
-- **🔌 Easy Integration**: RESTful API ready for your applications
-- **🎨 Beautiful UI**: Clean, modern interface with dark mode support
+- **AI-Powered Analysis**: Leverages Claude AI for intelligent content understanding
+- **Quick Results**: Generate comprehensive reports in under 60 seconds
+- **Detailed Insights**: Analyze content strategy, engagement metrics, and channel personality
+- **Simple API**: Easy integration with RESTful endpoints
+- **Modern Interface**: Clean, responsive design with dark mode
 
-## 🎯 Perfect For
-
-- **Content Creators**: Understand your competition and improve your strategy
-- **Marketing Agencies**: Generate quick channel insights for clients
-- **Researchers**: Analyze YouTube trends and content patterns
-- **Brands**: Find the right influencers for partnerships
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
+
 - Python 3.8+
-- Anthropic API key (for Claude AI)
-- Screenshot API key
+- Anthropic API key
+- YouTube Data API key
 
-### Local Setup
+### Installation
 
-1. **Clone & Install**
+1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/youtube-channel-persona-analyzer.git
+git clone https://github.com/your-username/youtube-channel-persona-analyzer.git
 cd youtube-channel-persona-analyzer
+```
+
+2. **Install dependencies**
+```bash
 pip install -r requirements.txt
 ```
 
-2. **Configure Environment**
+3. **Set up environment variables**
 ```bash
 cp .env.example .env
-# Add your API keys to .env
+# Edit .env with your API keys
 ```
 
-3. **Run the Application**
+4. **Run the application**
 ```bash
-make run  # Starts both API and web interface
-# Or individually:
-make run-api  # API on port 8001
-make run-web  # Web UI on port 8000
+# Start the API server
+python -m uvicorn persona_api:app --reload --port 8000
+
+# For development with hot reload
+make dev
 ```
 
-## 📊 Sample Analysis
+## 💡 Use Cases
 
-<details>
-<summary>Click to see example report</summary>
+- Content creators analyzing competition
+- Marketing teams researching influencers
+- Brands seeking partnership opportunities
+- Researchers studying content trends
 
-```markdown
-## Channel Persona: TechReviewer Pro
-
-🎯 Brand Essence: Authoritative yet approachable tech expert
-👥 Target Audience: Tech enthusiasts, 25-45, professionals
-📈 Growth Trajectory: 152% YoY subscriber growth
-...
-```
-
-</details>
-
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 - **Backend**: FastAPI, Python 3.8+
-- **AI Engine**: Claude AI (Anthropic)
-- **Frontend**: HTML5, CSS3, JavaScript
+- **AI**: Claude AI (Anthropic)
 - **Data Processing**: Pandas, NumPy
-- **Testing**: Pytest, Coverage.py
+- **Testing**: Pytest
 - **CI/CD**: GitHub Actions
 
-## 📈 Performance
+## 📊 Example Output
 
-- **Analysis Speed**: ~45 seconds per channel
-- **API Response Time**: <100ms
-- **Accuracy Rate**: 95% (validated against manual analysis)
-- **Concurrent Users**: 100+ (tested on basic setup)
+```json
+{
+    "channel_name": "TechReviewer Pro",
+    "brand_personality": "Authoritative yet approachable",
+    "target_audience": "Tech enthusiasts (25-45)",
+    "content_strategy": {
+        "main_topics": ["Tech reviews", "Tutorials"],
+        "posting_frequency": "2x weekly",
+        "engagement_rate": "8.5%"
+    }
+}
+```
 
 ## 🤝 Contributing
 
-We love your input! Check out our [Contributing Guide](CONTRIBUTING.md) to get started.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📜 License
+## 📝 License
 
-MIT License - fork, modify and use as you wish! See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## 💖 Support the Project
+## 📫 Contact
 
-If you find this tool useful, please consider:
-
-- ⭐ Starring the repository
-- 🐛 Reporting bugs
-- 💡 Suggesting new features
-- 🤝 Contributing to the code
-
-## 📚 Documentation
-
-Visit our [detailed documentation](docs/) for:
-- API Reference
-- Advanced Configuration
-- Deployment Guides
-- Troubleshooting
-
-## 🙏 Acknowledgments
-
-- [Anthropic](https://anthropic.com/) for Claude AI
-- [FastAPI](https://fastapi.tiangolo.com/) team
-- All our amazing contributors!
+Project Link: [https://github.com/your-username/youtube-channel-persona-analyzer](https://github.com/your-username/youtube-channel-persona-analyzer)
 
 ---
 
 <div align="center">
 Made with ❤️ by the YouTube Channel Persona Analyzer Team
-
-[Website](https://your-website.com) • [Twitter](https://twitter.com/yourhandle) • [Discord](https://discord.gg/yourserver)
 </div>
