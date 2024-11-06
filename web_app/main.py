@@ -42,13 +42,13 @@ async def analyze_channel(request: Request, youtube_channel_url: str = Form(...)
 
         logger.info(f"Making request to API: {API_BASE_URL}/test-analyze")
         
-        # Make request to the analysis API
+        # Make request to the analysis API with longer timeout
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.post(
                     f"{API_BASE_URL}/test-analyze",
                     json={"youtube_channel_url": youtube_channel_url},
-                    timeout=30.0
+                    timeout=300.0  # Increased timeout to 5 minutes
                 )
                 
                 logger.info(f"API Response status: {response.status_code}")

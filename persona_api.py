@@ -10,6 +10,7 @@ import logging
 from datetime import datetime
 import json
 import asyncio
+import re
 
 # Configure logging
 logging.basicConfig(
@@ -208,72 +209,124 @@ async def root():
         "health_check": "/health"
     }
 
+def parse_markdown_sections(content: str) -> dict:
+    """Parse markdown content into structured sections."""
+    sections = {
+        "channel_info": {},
+        "content_analysis": {},
+        "audience_insights": {},
+        "recommendations": {
+            "content_strategy": [],
+            "engagement_suggestions": []
+        }
+    }
+    
+    # Parse Basic Channel Data
+    channel_name_match = re.search(r'Channel Name: (.*)', content)
+    subscribers_match = re.search(r'Subscribers: (.*)', content)
+    if channel_name_match:
+        sections["channel_info"]["name"] = channel_name_match.group(1).strip()
+    if subscribers_match:
+        sections["channel_info"]["subscribers"] = subscribers_match.group(1).strip()
+    
+    # Parse Channel Classification
+    category_match = re.search(r'Primary Category: (.*)', content)
+    main_area_match = re.search(r'Main Area: (.*)', content)
+    niche_match = re.search(r'Specific Niche: (.*)', content)
+    if category_match:
+        sections["content_analysis"]["category"] = category_match.group(1).strip()
+    if main_area_match:
+        sections["content_analysis"]["main_area"] = main_area_match.group(1).strip()
+    if niche_match:
+        sections["content_analysis"]["niche"] = niche_match.group(1).strip()
+    
+    # Parse Themes/Topics
+    themes_section = re.search(r'Themes reveal audience interests in:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
+    if themes_section:
+        themes = re.findall(r'-\s*(.*)', themes_section.group(1))
+        sections["content_analysis"]["main_topics"] = themes
+    
+    # Parse Expertise and Style
+    expertise_section = re.search(r'Expertise Demonstration:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
+    if expertise_section:
+        expertise = re.findall(r'-\s*(.*)', expertise_section.group(1))
+        sections["content_analysis"]["expertise"] = expertise
+    
+    presentation_section = re.search(r'Presentation Style:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
+    if presentation_section:
+        style = re.findall(r'-\s*(.*)', presentation_section.group(1))
+        sections["content_analysis"]["presentation_style"] = style
+    
+    # Parse Target Audience
+    audience_section = re.search(r'Target Audience:(.*?)(?=\n\n|\Z)', content, re.DOTALL)
+    if audience_section:
+        audience = re.findall(r'-\s*(.*)', audience_section.group(1))
+        sections["audience_insights"]["target_audience"] = audience
+    
+    return sections
+
 @app.post("/test-analyze")
 async def test_analyze(request: ChannelAnalysisRequest):
-    """Enhanced test endpoint with simulated pipeline stages."""
+    """Enhanced test endpoint that runs pipeline and reads analysis."""
     try:
-        stages = [
-            ("Initializing Analysis", 10),
-            ("Capturing Channel Screenshots", 30),
-            ("Processing Images", 50),
-            ("Analyzing Channel Content", 70),
-            ("Generating Persona Report", 90),
-            ("Finalizing Results", 100)
-        ]
+        # Get the channel handle from the URL
+        channel_handle = str(request.youtube_channel_url).split('@')[-1]
+        logger.info(f"Starting analysis for channel: {channel_handle}")
         
-        # Simulate pipeline stages with actual data
-        analysis_data = {
-            "channel_info": {
-                "name": "Sample Channel",
-                "subscribers": "100K+",
-                "total_videos": "500+",
-                "join_date": "2020"
-            },
-            "content_analysis": {
-                "main_topics": ["Technology", "AI", "Programming"],
-                "video_style": "Educational/Tutorial",
-                "avg_duration": "15-20 minutes"
-            },
-            "audience_insights": {
-                "primary_demographic": "Tech professionals & students",
-                "engagement_rate": "8.5%",
-                "peak_activity": "Weekdays evenings"
-            },
-            "recommendations": [
-                "Increase upload frequency",
-                "Expand topic coverage",
-                "Enhance community engagement"
-            ]
-        }
-
+        # Initialize and run the pipeline
+        try:
+            pipeline = PersonaPipeline()
+            # Run the pipeline with the URL
+            await asyncio.get_event_loop().run_in_executor(
+                None, 
+                pipeline.process_channel, 
+                str(request.youtube_channel_url)
+            )
+            logger.info("Pipeline processing completed")
+            
+        except Exception as e:
+            logger.error(f"Pipeline error: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing channel: {str(e)}"
+            )
+        
+        # Find the generated analysis file
+        data_dir = Path('data')
+        analysis_files = list(data_dir.glob(f'crop_{channel_handle}_*_analysis.md'))
+        
+        if not analysis_files:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No analysis found for channel {channel_handle}"
+            )
+        
+        # Get the most recent file
+        latest_file = max(analysis_files, key=lambda x: x.stat().st_mtime)
+        
+        # Read and parse the markdown content
+        content = latest_file.read_text()
+        parsed_data = parse_markdown_sections(content)
+        
         # Return formatted analysis results
         return {
             "youtube_channel_url": str(request.youtube_channel_url),
-            "analysis_timestamp": datetime.utcnow().isoformat() + "Z",
-            "persona_analysis": analysis_data,
+            "analysis_timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat() + "Z",
+            "persona_analysis": parsed_data,
             "metrics": {
-                "analyzed_videos": 10,
+                "analyzed_videos": len(re.findall(r'"\d+\..*?"', content)),
                 "engagement_metrics": {
-                    "avg_likes": "5K+",
-                    "avg_comments": "500+",
-                    "view_retention": "65%"
+                    "source_file": latest_file.name
                 }
             },
             "recommendations": {
-                "content_strategy": [
-                    "Focus on trending tech topics",
-                    "Create series-based content",
-                    "Optimize video lengths"
-                ],
-                "engagement_suggestions": [
-                    "Increase community posts",
-                    "Host live Q&A sessions",
-                    "Collaborate with similar channels"
-                ]
+                "content_strategy": parsed_data["recommendations"]["content_strategy"],
+                "engagement_suggestions": parsed_data["recommendations"]["engagement_suggestions"]
             }
         }
+        
     except Exception as e:
-        logger.error(f"Error in test analysis: {str(e)}")
+        logger.error(f"Error in analysis: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

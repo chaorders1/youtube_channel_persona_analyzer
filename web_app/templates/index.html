@@ -121,6 +121,30 @@
                 </div>
             </div>
             {% endif %}
+
+            <!-- Main Topics -->
+            {% if results.persona_analysis.content_analysis.main_topics %}
+            <div class="section">
+                <h3>Main Topics</h3>
+                <div class="topics-grid">
+                    {% for topic in results.persona_analysis.content_analysis.main_topics %}
+                    <div class="topic-item">{{ topic }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Expertise -->
+            {% if results.persona_analysis.content_analysis.expertise %}
+            <div class="section">
+                <h3>Expertise</h3>
+                <ul class="expertise-list">
+                    {% for item in results.persona_analysis.content_analysis.expertise %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
     </div>
