@@ -85,9 +85,9 @@ from typing import List, Optional
 import time
 
 # Import the utility modules to use their main functions
-import screenshotapi
-import picture_crop
-from persona import PersonaAnalyzer  # Import the correct class
+from . import screenshotapi
+from . import picture_crop
+from .persona import PersonaAnalyzer  # Import the correct class
 
 class PersonaPipeline:
     """
