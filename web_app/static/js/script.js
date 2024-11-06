@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsContainer = document.querySelector('.results-container');
 
     const stages = [
-        { message: "Initializing analysis...", progress: 10 },
-        { message: "Capturing channel screenshots...", progress: 30 },
-        { message: "Processing images...", progress: 50 },
-        { message: "Analyzing channel content...", progress: 70 },
-        { message: "Generating persona report...", progress: 90 },
-        { message: "Finalizing results...", progress: 95 }
+        { message: "Initializing analysis...", progress: 10, duration: 7000 },
+        { message: "Capturing channel screenshots...", progress: 30, duration: 7000 },
+        { message: "Processing images...", progress: 50, duration: 5000 },
+        { message: "Analyzing channel content...", progress: 70, duration: 4000 },
+        { message: "Generating persona report...", progress: 90, duration: 3000 },
+        { message: "Finalizing results...", progress: 95, duration: 2000 }
     ];
 
     let currentStage = 0;
@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentStage < stages.length) {
             updateProgress(stages[currentStage].message, stages[currentStage].progress);
             currentStage++;
+            if (currentStage < stages.length) {
+                clearInterval(progressInterval);
+                progressInterval = setInterval(simulateProgress, stages[currentStage].duration);
+            }
         }
     }
 
@@ -46,10 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         progressContainer.style.display = 'block';
 
         // 3. Start progress simulation
-        if (progressInterval) {
-            clearInterval(progressInterval);
-        }
-        progressInterval = setInterval(simulateProgress, 3000);
+        progressInterval = setInterval(simulateProgress, stages[0].duration);
     }
 
     form.addEventListener('submit', async function(e) {

@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: GitHub_20241106_150051.png
+- Original Path: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/web_snapshots/GitHub_20241106_150051.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x7748
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 8
+- Output Directory: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/crop_GitHub_20241106_150051
+
+Processing Date: 2024-11-06 15:01:16

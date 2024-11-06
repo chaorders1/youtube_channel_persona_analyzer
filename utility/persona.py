@@ -350,7 +350,7 @@ class PersonaAnalyzer:
             logger.info("Sending request to Claude API...")
             response = self.client.messages.create(
                 model="claude-3-5-sonnet-20241022",
-                max_tokens=100,
+                max_tokens=5000,
                 temperature=0.5,
                 messages=[{
                     'role': 'user',

@@ -19,6 +19,10 @@ AI-powered YouTube channel analysis tool that generates detailed persona reports
 - **Simple API**: Easy integration with RESTful endpoints
 - **Modern Interface**: Clean, responsive design with dark mode
 
+## 📸 Screenshot
+
+![github channel analysis](asset/picture/github_channel_analysis.png)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -49,10 +53,10 @@ cp .env.example .env
 4. **Run the application**
 ```bash
 # Start the API server
-python -m uvicorn persona_api:app --reload --port 8000
+uvicorn persona_api:app --reload --port 8001
 
-# For development with hot reload
-make dev
+# Start web server
+uvicorn web_app.main:app --reload --port 8000
 ```
 
 ## 💡 Use Cases
@@ -62,46 +66,11 @@ make dev
 - Brands seeking partnership opportunities
 - Researchers studying content trends
 
-## 🛠️ Technology Stack
 
-- **Backend**: FastAPI, Python 3.8+
-- **AI**: Claude AI (Anthropic)
-- **Data Processing**: Pandas, NumPy
-- **Testing**: Pytest
-- **CI/CD**: GitHub Actions
-
-## 📊 Example Output
-
-```json
-{
-    "channel_name": "TechReviewer Pro",
-    "brand_personality": "Authoritative yet approachable",
-    "target_audience": "Tech enthusiasts (25-45)",
-    "content_strategy": {
-        "main_topics": ["Tech reviews", "Tutorials"],
-        "posting_frequency": "2x weekly",
-        "engagement_rate": "8.5%"
-    }
-}
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📝 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-## 📫 Contact
-
-Project Link: [https://github.com/your-username/youtube-channel-persona-analyzer](https://github.com/your-username/youtube-channel-persona-analyzer)
 
 ---
 

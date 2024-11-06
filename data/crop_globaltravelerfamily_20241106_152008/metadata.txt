@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: globaltravelerfamily_20241106_152008.png
+- Original Path: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/web_snapshots/globaltravelerfamily_20241106_152008.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x6856
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 7
+- Output Directory: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/crop_globaltravelerfamily_20241106_152008
+
+Processing Date: 2024-11-06 15:20:31
