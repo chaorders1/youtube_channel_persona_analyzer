@@ -23,7 +23,7 @@ AI-powered YouTube channel analysis tool that generates detailed persona reports
 
 ![github channel analysis](asset/picture/github_channel_analysis.png)
 
-## [Youtube video](https://www.youtube.com/watch?v=ZZpiZWEHc1U)
+## [Youtube video](https://www.youtube.com/watch?v=qNBO3OBX6X0)
 
 
 
