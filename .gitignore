@@ -88,20 +88,3 @@ logs/
 *.opus
 *.aac
 
-# Picture files
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.tiff
-*.webp
-*.svg
-*.ico
-*.psd
-*.ai
-*.eps
-*.raw
-*.cr2
-*.nef
-*.heic
