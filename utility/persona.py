@@ -340,10 +340,10 @@ class PersonaAnalyzer:
                 model="claude-3-5-sonnet-20241022",
                 max_tokens=5000,
                 temperature=0.5,
-                messages=[{
-                    'role': 'user',
-                    'content': message_content
-                }]
+                messages=[
+                    {'role': 'user', 'content': message_content},
+                    {'role': 'assistant', 'content': '# YouTube Channel Analysis Report'}
+                ]
             )
             logger.info("Received response from Claude API")
             return response.content[0].text
