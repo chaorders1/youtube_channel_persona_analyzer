@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, HTTPException, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-import markdown2
+from markdown_it import MarkdownIt
 import httpx
 import os
 from pathlib import Path
@@ -12,14 +12,16 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize markdown converter with extras
-markdown_converter = markdown2.Markdown(extras=[
-    "fenced-code-blocks",
-    "tables",
-    "break-on-newline",
-    "header-ids",
-    "task_list"
-])
+# Initialize markdown converter with plugins and features
+md = (
+    MarkdownIt('commonmark', {
+        'breaks': True,  # Convert '\n' in paragraphs into <br>
+        'html': True,    # Enable HTML tags in source
+        'linkify': True  # Autoconvert URL-like text to links
+    })
+    .enable('table')     # Enable table syntax
+    .enable('strikethrough')
+)
 
 # Get the absolute path to the web_app directory
 WEB_APP_DIR = Path(__file__).parent
@@ -73,8 +75,8 @@ async def analyze_channel(request: Request, youtube_channel_url: str = Form(...)
                     
                 analysis_results = response.json()
                 
-                # Convert markdown to HTML
-                html_content = markdown_converter.convert(analysis_results["analysis_content"])
+                # Convert markdown to HTML using markdown-it-py
+                html_content = md.render(analysis_results["analysis_content"])
                 
                 formatted_results = {
                     "youtube_channel_url": analysis_results["youtube_channel_url"],

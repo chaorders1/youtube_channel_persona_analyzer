@@ -8,7 +8,7 @@ python-multipart>=0.0.5
 httpx>=0.24.0
 
 # Markdown Processing
-markdown2==2.4.10
+markdown-it-py[linkify,plugins]
 
 # Image Processing & Web Scraping
 Pillow>=9.0.0
