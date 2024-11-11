@@ -213,18 +213,24 @@ async def root():
 async def test_analyze(request: ChannelAnalysisRequest):
     """Enhanced test endpoint that runs pipeline and returns raw analysis."""
     try:
-        # Get the channel handle from the URL
-        channel_handle = str(request.youtube_channel_url).split('@')[-1]
-        logger.info(f"Starting analysis for channel: {channel_handle}")
+        # Get the channel identifier from the URL - handle both YouTube and Bilibili
+        url = str(request.youtube_channel_url)
+        if 'youtube.com' in url:
+            identifier = url.split('@')[-1]
+        elif 'bilibili.com' in url:
+            identifier = url.split('/')[-1]
+        else:
+            identifier = re.sub(r'[^\w]', '_', url)  # Fallback: sanitize URL to use as identifier
+            
+        logger.info(f"Starting analysis for channel: {identifier}")
         
         # Initialize and run the pipeline
         try:
             pipeline = PersonaPipeline()
-            # Run the pipeline with the URL
             await asyncio.get_event_loop().run_in_executor(
                 None, 
                 pipeline.process_channel, 
-                str(request.youtube_channel_url)
+                url
             )
             logger.info("Pipeline processing completed")
             
@@ -235,25 +241,33 @@ async def test_analyze(request: ChannelAnalysisRequest):
                 detail=f"Error processing channel: {str(e)}"
             )
         
-        # Find the generated analysis file
+        # Find the generated analysis file - look for any recent analysis file
         data_dir = Path('data')
-        analysis_files = list(data_dir.glob(f'crop_{channel_handle}_*_analysis.md'))
+        analysis_files = list(data_dir.glob('crop_*_analysis.md'))
         
         if not analysis_files:
             raise HTTPException(
                 status_code=404,
-                detail=f"No analysis found for channel {channel_handle}"
+                detail=f"No analysis files found in data directory"
             )
         
         # Get the most recent file
         latest_file = max(analysis_files, key=lambda x: x.stat().st_mtime)
+        
+        # Verify the file was created in the last minute to ensure it's from this request
+        file_age = datetime.now().timestamp() - latest_file.stat().st_mtime
+        if file_age > 60:  # File is older than 60 seconds
+            raise HTTPException(
+                status_code=404,
+                detail="No recent analysis file found"
+            )
         
         # Read the markdown content directly
         content = latest_file.read_text()
         
         # Return the analysis results with the raw markdown content
         return {
-            "youtube_channel_url": str(request.youtube_channel_url),
+            "youtube_channel_url": url,
             "analysis_timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat() + "Z",
             "analysis_content": content,
             "source_file": latest_file.name

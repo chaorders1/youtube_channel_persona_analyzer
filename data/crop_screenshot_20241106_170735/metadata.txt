@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: screenshot_20241106_170735.png
+- Original Path: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/web_snapshots/screenshot_20241106_170735.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x10928
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 11
+- Output Directory: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/crop_screenshot_20241106_170735
+
+Processing Date: 2024-11-06 17:07:57

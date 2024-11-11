@@ -91,3 +91,9 @@ The project utilizes the following libraries:
 
 ** # Future Enhancements (Optional) **
 xxxxx
+
+
+
+** # Start server command **
+uvicorn persona_api:app --reload --port 8001
+uvicorn web_app.main:app --reload --port 8000

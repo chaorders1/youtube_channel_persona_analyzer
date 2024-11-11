@@ -100,85 +100,73 @@ class PersonaAnalyzer:
 
     # Define prompt template directly in code
     PROMPT_TEMPLATE = """
-    You are an expert in YouTube content creation and an advisor to the content creator shown in the following screenshots. Your task is to analyze these screenshots and generate a comprehensive report in markdown format. Here are the screenshots:
+    You will be analyzing screenshots of a YouTube channel to provide insights and recommendations for a content creator. The screenshots contain information about the channel's videos, metrics, and other relevant data. Here are the screenshots:
 
     <screenshots>
     {{SCREENSHOTS}}
     </screenshots>
 
-    Carefully examine these screenshots and use the information they contain to complete the following framework. Your language should be vivid, descriptive, and easy to understand. Please strictly follow the framework structure and maintain consistent formatting throughout your report.
+    Your task is to generate an artifact in markdown format following a specific framework. The framework is divided into three parts: Classification & Metrics, Creator Analysis, and Content Analysis. You should analyze the information in the screenshots and provide detailed insights for each section.
 
-    Your report should be divided into three main parts:
+    For PART 1: CLASSIFICATION & METRICS, follow these steps:
 
-    PART 1: CLASSIFICATION & METRICS
-    In this section, complete the following steps:
+    1. Extract and list the basic channel data, including:
+        - Channel name and subscriber count
+        - Top 10 performing videos ranked by view count
+        - Themes of the top 5 performing videos and the deeper audience desires they reveal
+    2. Classify the channel by:
+        - Identifying the primary category in one of the following (Personality/Entertainment Driven, Professional/Educational/Corporate, or Curated/Aggregate)
+        - Determining the area of interest (e.g., Food, Travel, Technology)
+        - Identifying the subculture or niche
+        - Noting whether the creator shows their face
 
-    1. Basic Channel Data
-       - Identify the channel name and subscriber count
-       - List the top 10 performing videos shown, ranked by exact views
-       - Calculate the average views across these videos
-       - Note the themes of the top 5 performing videos and analyze what deeper audience desires these reveal
+    For PART 2: CREATOR ANALYSIS, choose the relevant framework based on the channel classification:
 
-    2. Channel Classification
-       - Identify the primary category of the channel:
-         a) Personality/Entertainment Driven
-         b) Professional/Educational
-         c) Curated/Aggregate
-       - Identify the main area of interest (e.g., Food, Travel, Technology, Fashion, Education, Relationships, Gaming)
-       - Identify the specific subculture or niche (e.g., Practical Italian recipes)
-       - Note whether the creator shows their own face in the content
+    - For Personality/Entertainment channels, analyze the Creator Essence with particular attention to cultural resonance, audience connection, and authentic storytelling elements
+        - Linguistic style (e.g., humorous, serious, warm, thoughtful) + use of regional or subculture slang / emojis / catchphrases if any
+        - Quote examples from video titles (DOUBLE CHECK FOR ACCURACY)
+        - Distinguishing demographic or cultural characteristics if any shown
+        - Personal Values (50 words) including core beliefs demonstrated, what they stand for, life philosophy
+        - Key Life Events & Journey ONLY IF SHOWN: Origin story + Major transitions + Career changes + Location moves + Significant milestones + Current situation
+        - Aesthetics: Briefly describe color schemes, composition methods, and style preferences.
+    - For Professional/Educational channels, analyze the Brand Essence, with particular attention to brand positioning, authority, subcultural or local resonance, audience connection
+        - Brand mission / corporate identity
+        - Expertise demonstration / credibility markers
+        - Presentation style, SPECIAL NOTE if this professional channels shows humor or emotion to connect audience with brand
+        - Target audience location, demographic, or culture or subculture / niche characteristics
+        - Value proposition clarity
+    - For Curated channels, analyze the Curation Effectiveness with particular attention to theme and flow, subcultural or local resonance, audience connection
+        - Content selection criteria
+        - Value addition methods
+        - Source management
+        - Theme consistency
+        - Community building
 
-    PART 2: CATEGORY-SPECIFIC ANALYSIS
-    Based on your classification in Part 1, follow the relevant framework:
+    For PART 3: CONTENT ANALYSIS, complete the following for ALL channels:
 
-    FOR PERSONALITY/ENTERTAINMENT CHANNELS ONLY:
-    Analyze the Creator Essence, paying particular attention to cultural resonance, audience connection, and authentic storytelling elements. Include:
-    - Linguistic style (e.g., humorous, serious, warm, thoughtful)
-    - Use of regional or subculture slang / emojis / catchphrases if any
-    - Quote examples from video titles (double check for accuracy)
-    - Distinguishing demographic or cultural characteristics if shown
-    - Personal Values (in about 50 words) including core beliefs demonstrated, what they stand for, life philosophy
-    - Key Life Events & Journey ONLY IF SHOWN: Origin story, major transitions, career changes, location moves, significant milestones, current situation
-    - Aesthetics: Briefly describe color schemes, composition methods, and style preferences
+    1. Analyze the Content Strategy, including:
+        - Overall impression of brand personality or image or theme
+        - Most successful formats and themes
+        - Title/thumbnail patterns
+        - Upload frequency
+        - List of 5 key phrases to find similar accounts
+    2. Provide a Brief Summary (300 words) covering:
+        - Key success factors and audience pain points/aspirations
+        - Primary strengths
+        - Growth opportunities
+        - Unique value proposition
 
-    FOR PROFESSIONAL/EDUCATIONAL CHANNELS ONLY:
-    Analyze the Brand Essence, paying particular attention to brand positioning, authority, subcultural or local resonance, and audience connection. Include:
-    - Expertise demonstration
-    - Presentation style
-    - Brand mission / corporate identity
-    - Target location, demographic or culture characteristics
-    - Value proposition clarity
-    - Credibility markers
+    When writing your analysis:
 
-    FOR CURATED CHANNELS ONLY:
-    Analyze the Curation Effectiveness, paying particular attention to theme and flow, subcultural or local resonance, and audience connection. Include:
-    - Content selection criteria
-    - Value addition methods
-    - Source management
-    - Theme consistency
-    - Community building
+    - Use vivid, descriptive, and easy-to-understand language
+    - Strictly follow the framework structure and maintain consistent formatting
+    - Include examples and quotes from the screenshots where relevant
+    - Pay attention to cultural resonance, audience connection, and authentic storytelling elements
+    - Double-check number counts and ensure accuracy when quoting video titles
 
-    PART 3: UNIVERSAL ANALYSIS
-    Complete this section for all channels:
+    Format your output in markdown, using appropriate headers, bullet points, and emphasis where needed. Begin your response with "## PART 1: CLASSIFICATION & METRICS" and continue with the subsequent parts as outlined in the framework.
 
-    1. Content Strategy
-       - Overall impression of brand personality (about 100 words, can include examples and quotes)
-       - Most successful formats and themes
-       - Title/thumbnail patterns
-       - Upload frequency
-       - List of 5 key phrases to find similar accounts
-
-    2. Brief Summary (300 words, can include examples and quotes)
-       - Key success factors
-       - Audience pain points
-       - What the audience aspires to be
-       - Primary strengths
-       - Growth opportunities
-       - Unique value proposition
-
-    Format your entire report in markdown, using appropriate headers, bullet points, and emphasis where needed. Ensure that your analysis is thorough, insightful, and based solely on the information provided in the screenshots. Do not make assumptions or include information not evident from the given data.
-
-    Begin your analysis now.
+    Do not include any additional output or explanations outside of the requested artifact.
 
     """
 

@@ -1,0 +1,19 @@
+Image Crop Metadata:
+==================
+
+Source Information:
+- Image File: imdrewdoes_20241108_110031.png
+- Original Path: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/web_snapshots/imdrewdoes_20241108_110031.png
+- Format: PNG
+
+Image Properties:
+- Dimensions: 3840x7310
+- Mode: RGB
+
+Crop Settings:
+- Part Height: 1024 pixels
+- Overlap: 100 pixels
+- Number of Parts: 8
+- Output Directory: /Users/yuanlu/Code/youtube_channel_persona_analyzer/data/crop_imdrewdoes_20241108_110031
+
+Processing Date: 2024-11-08 11:00:54
